@@ -1,0 +1,84 @@
+.TH macf 1 "October 2023" "1.0" "MAC Address Formatter"
+.SH NAME
+macf \- A program to format MAC addresses into various styles.
+
+.SH SYNOPSIS
+.B macf
+[\fIMAC_ADDRESS\fR | \fB--single\fR \fIMAC_ADDRESS\fR] \fIFORMAT\fR [\fB-f\fR \fIFILE\fR] [\fB-o\fR \fIOUTPUT_FILE\fR] [\fB--output-errors\fR \fIERROR_FILE\fR] [\fB-v\fR]
+
+.SH DESCRIPTION
+.B macf
+is a utility that converts MAC addresses into various formats. It can process a single MAC address provided as an argument or multiple MAC addresses from a file. Invalid MAC addresses can be logged to a separate error file.
+
+The available formats include:
+.IP
+- Cisco format: \fB0000.0000.0000\fR
+.IP
+- Dash-separated format: \fB00-00-00-00-00-00\fR
+.IP
+- Colon-separated format: \fB00:00:00:00:00:00\fR
+.IP
+- Raw format (no separators): \fB000000000000\fR
+
+By default, the program outputs results to standard output unless the \fB-o\fR flag is used to specify an output file.
+
+.SH OPTIONS
+.TP
+\fIMAC_ADDRESS\fR
+Specifies a single MAC address to process. This can be provided directly as an argument.
+
+.TP
+\fB--single\fR \fIMAC_ADDRESS\fR
+Explicitly processes a single MAC address. Equivalent to providing a MAC address directly as an argument.
+
+.TP
+\fB-f\fR, \fB--file\fR \fIFILE\fR
+Specifies a file containing multiple MAC addresses to process. Each MAC address should be on a separate line. The program will process all MAC addresses in the file.
+
+.TP
+\fB-o\fR \fIOUTPUT_FILE\fR
+Specifies the file to write the formatted MAC addresses to. If not provided, results are written to standard output.
+
+.TP
+\fB--output-errors\fR \fIERROR_FILE\fR
+Specifies the file to write invalid MAC addresses to. If not provided, invalid MAC addresses are not logged.
+
+.TP
+\fB-v\fR
+Enables verbose output. Displays conversion details and errors in the terminal.
+
+.TP
+\fIFORMAT\fR
+Specifies the format to convert MAC addresses into. Supported formats are:
+.IP
+- \fBcisco\fR: \fB0000.0000.0000\fR
+.IP
+- \fBdash\fR: \fB00-00-00-00-00-00\fR
+.IP
+- \fBcolon\fR: \fB00:00:00:00:00:00\fR
+.IP
+- \fBraw\fR: \fB000000000000\fR
+
+.SH EXAMPLES
+.TP
+Convert a single MAC address to Cisco format:
+.B macf 00-11-22-33-44-55 cisco
+.TP
+Convert a single MAC address to colon format and write to a file:
+.B macf 00-11-22-33-44-55 colon -o output.txt
+.TP
+Convert MAC addresses from a file to dash format:
+.B macf -f macs.txt dash
+.TP
+Convert MAC addresses from a file to raw format and log errors:
+.B macf -f macs.txt raw --output-errors errors.txt
+
+.SH AUTHOR
+Written by Kenneth Parnell - taylor@chronobyte.net.
+
+.SH BUGS
+No known bugs. Please report issues to taylor@chronobyte.net.
+
+.SH COPYRIGHT
+Copyright 2023. All rights reserved.
+
