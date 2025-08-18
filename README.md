@@ -1,6 +1,6 @@
 # macf - MAC Address Formatter
 
-`macf` is a command-line utility for converting MAC addresses into different formats. It can process a single MAC address or multiple MAC addresses from a file. Invalid MAC addresses can be logged to a separate error file.
+`macf` is a command-line utility for converting MAC addresses into different formats. It can process a single MAC address or multiple MAC addresses from a file. 
 
 ## Features
 
