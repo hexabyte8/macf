@@ -11,7 +11,6 @@
   - Raw format (no separators): `000000000000`
 - Supports single MAC address input or file-based input.
 - Outputs results to standard output or a specified file.
-- Logs invalid MAC addresses to an error file (optional).
 - Verbose mode for detailed output.
 
 ## Usage
@@ -19,4 +18,4 @@
 ### Syntax
 
 ```bash
-macf [MAC_ADDRESS | --single MAC_ADDRESS] FORMAT [-f FILE] [-o OUTPUT_FILE] [--output-errors ERROR_FILE] [-v]
+macf [MAC_ADDRESS] FORMAT [-f FILE] [-v]
