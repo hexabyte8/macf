@@ -7,12 +7,13 @@
 
 // Function declarations
 int is_valid_mac(const char *mac);
+int is_valid_format(const char *format);
 void format_mac_address(const char *input, char *output, const char *format);
 void process_mac_addresses_from_file(const char *input_file, const char *format, int verbose);
 void process_single_mac_address(const char *mac, const char *format, int verbose);
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
+    if (argc < 3) {
         fprintf(stderr, "Usage: %s <mac_address> <format> [-f <input_file>] [-v]\n", argv[0]);
         fprintf(stderr, "Formats: cisco, dash, colon, raw\n");
         return EXIT_FAILURE;
@@ -36,10 +37,10 @@ int main(int argc, char *argv[]) {
             }
         } else if (strcmp(argv[i], "-v") == 0) {
             verbose = 1;
-        } else if (format == NULL) {
-            format = argv[i]; // First non-flag argument is the format
+        } else if (format == NULL && is_valid_format(argv[i])) {
+            format = argv[i]; // First valid format argument
         } else if (mac_address == NULL) {
-            mac_address = argv[i]; // Second non-flag argument is the MAC address
+            mac_address = argv[i]; // First non-flag, non-format argument is the MAC address
         } else {
             fprintf(stderr, "Error: Unrecognized argument: %s\n", argv[i]);
             return EXIT_FAILURE;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     // Ensure format is provided
     if (format == NULL) {
-        fprintf(stderr, "Error: No format provided. Supported formats: cisco, dash, colon, raw.\n");
+        fprintf(stderr, "Error: No valid format provided. Supported formats: cisco, dash, colon, raw.\n");
         return EXIT_FAILURE;
     }
 
@@ -78,6 +79,12 @@ int is_valid_mac(const char *mac) {
         mac++;
     }
     return length == MAC_ADDRESS_LENGTH;
+}
+
+// Function to validate if a format is valid
+int is_valid_format(const char *format) {
+    return strcmp(format, "cisco") == 0 || strcmp(format, "dash") == 0 ||
+           strcmp(format, "colon") == 0 || strcmp(format, "raw") == 0;
 }
 
 // Function to format a MAC address
@@ -120,17 +127,23 @@ void format_mac_address(const char *input, char *output, const char *format) {
 void process_single_mac_address(const char *mac, const char *format, int verbose) {
     char formatted_mac[256];
 
-    if (is_valid_mac(mac)) {
-        format_mac_address(mac, formatted_mac, format);
-	    // Print to standard output
-	    printf("%s\n", formatted_mac);
-        }
-
-        if (verbose) {
-            printf("Converted: %s -> %s\n", mac, formatted_mac);
-        }
-     else {
+    if (!is_valid_mac(mac)) {
         fprintf(stderr, "Error: Invalid MAC address: %s\n", mac);
+        return;
+    }
+
+    format_mac_address(mac, formatted_mac, format);
+
+    if (strcmp(formatted_mac, "INVALID_FORMAT") == 0) {
+        fprintf(stderr, "Error: Unsupported format: %s\n", format);
+        return;
+    }
+
+    // Print the formatted MAC address
+    printf("%s\n", formatted_mac);
+
+    if (verbose) {
+        printf("Converted: %s -> %s\n", mac, formatted_mac);
     }
 }
 
@@ -148,17 +161,24 @@ void process_mac_addresses_from_file(const char *input_file, const char *format,
         char formatted_mac[256];
         sscanf(line, "%s", mac); // Read the MAC address from the line
 
-        if (is_valid_mac(mac)) {
-            format_mac_address(mac, formatted_mac, format);
-	    printf("%s\n", formatted_mac);
-
-            if (verbose) {
-                printf("Converted: %s -> %s\n", mac, formatted_mac);
-            }
-        } else {
+        if (!is_valid_mac(mac)) {
             if (verbose) {
                 fprintf(stderr, "Error: Invalid MAC address: %s\n", mac);
             }
+            continue;
+        }
+
+        format_mac_address(mac, formatted_mac, format);
+
+        if (strcmp(formatted_mac, "INVALID_FORMAT") == 0) {
+            fprintf(stderr, "Error: Unsupported format: %s\n", format);
+            continue;
+        }
+
+        printf("%s\n", formatted_mac);
+
+        if (verbose) {
+            printf("Converted: %s -> %s\n", mac, formatted_mac);
         }
     }
 
