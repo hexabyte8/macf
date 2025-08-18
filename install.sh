@@ -24,7 +24,6 @@ install() {
   echo "Installing man page..."
   sudo mkdir -p "$MAN_DIR"
   sudo cp "$MAN_PAGE_NAME" "$MAN_DIR/$MAN_PAGE_NAME"
-  sudo mandb
 
   echo "$PROGRAM_NAME installed successfully."
 }
