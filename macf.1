@@ -1,4 +1,4 @@
-.TH macf 1 "October 2023" "1.0" "MAC Address Formatter"
+.TH macf 1 "August 2025" "1.1" "MAC Address Formatter"
 .SH NAME
 macf \- A program to format MAC addresses into various styles.
 
@@ -72,13 +72,15 @@ Convert MAC addresses from a file to dash format:
 .TP
 Convert MAC addresses from a file to raw format and log errors:
 .B macf -f macs.txt raw --output-errors errors.txt
+.TP
+Enable verbose mode while processing a single MAC address:
+.B macf 00-11-22-33-44-55 colon -v
+.TP
+Process MAC addresses from a file and write both valid and invalid addresses to separate files:
+.B macf -f macs.txt dash -o valid_macs.txt --output-errors invalid_macs.txt
 
 .SH AUTHOR
 Written by Kenneth Parnell - taylor@chronobyte.net.
 
 .SH BUGS
 No known bugs. Please report issues to taylor@chronobyte.net.
-
-.SH COPYRIGHT
-Copyright 2023. All rights reserved.
-
