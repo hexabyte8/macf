@@ -14,13 +14,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         include:
           - os: ubuntu-latest
-            artifact_name: macf-linux
+            artifact_name: macf-linux-x86_64
+            binary_name: macf
+          - os: macos-13
+            artifact_name: macf-macos-x86_64
             binary_name: macf
           - os: macos-latest
-            artifact_name: macf-macos
+            artifact_name: macf-macos-arm64
             binary_name: macf
     
     steps:
