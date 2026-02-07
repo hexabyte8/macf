@@ -5,7 +5,7 @@
 
 #define MAC_ADDRESS_LENGTH 12
 
-// Function declarations
+// Function declarations here
 int is_valid_mac(const char *mac);
 int is_valid_format(const char *format);
 void format_mac_address(const char *input, char *output, const char *format);
