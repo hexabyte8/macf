@@ -1,0 +1,53 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: macf-linux
+            binary_name: macf
+          - os: macos-latest
+            artifact_name: macf-macos
+            binary_name: macf
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Build
+      run: gcc -o macf main.c
+    
+    - name: Test executable
+      run: |
+        ./macf 00:11:22:33:44:55 cisco
+        ./macf 00:11:22:33:44:55 dash
+        ./macf 00:11:22:33:44:55 colon
+        ./macf 00:11:22:33:44:55 raw
+    
+    - name: Create artifact directory
+      run: |
+        mkdir -p artifact
+        cp macf artifact/${{ matrix.binary_name }}
+        cp macf.1 artifact/
+        cp README.md artifact/
+        cp LICENSE artifact/
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: artifact/
+        retention-days: 90
