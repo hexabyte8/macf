@@ -13,14 +13,12 @@ Pre-built binaries are available for Linux and macOS:
 2. Click on the latest successful "Build" workflow run
 3. Download the artifact for your platform:
    - `macf-linux-x86_64` for Linux (x86_64)
-   - `macf-macos-x86_64` for macOS (Intel x86_64)
    - `macf-macos-arm64` for macOS (Apple Silicon ARM64)
 4. Extract the archive and make the binary executable: `chmod +x macf`
 
 ### From Releases
 When a release is published, download pre-built binaries from the [Releases page](https://github.com/hexabyte8/macf/releases):
 - `macf-linux-x86_64.tar.gz` for Linux (x86_64)
-- `macf-macos-x86_64.tar.gz` for macOS (Intel x86_64)
 - `macf-macos-arm64.tar.gz` for macOS (Apple Silicon ARM64)
 
 Extract and install:
